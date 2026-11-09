@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RhymeMaker AI</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#101426;color:white;padding:20px}
+main{max-width:650px;margin:auto}
+header{text-align:center;padding:25px 5px}
+h1{font-size:32px;color:#a99bff;margin-bottom:8px}
+p{color:#c4c8dc;line-height:1.5}
+.card{background:#1c2340;padding:20px;border-radius:18px;margin:15px 0}
+label{display:block;margin:15px 0 7px;font-weight:bold}
+input,select,textarea{width:100%;padding:13px;border-radius:10px;border:1px solid #454e70;background:#11182d;color:white;font-size:16px}
+textarea{min-height:100px}
+button{width:100%;padding:15px;border:0;border-radius:12px;background:#8c75ff;color:white;font-weight:bold;font-size:16px;margin-top:18px}
+button:active{opacity:.8}
+#output{white-space:pre-wrap;line-height:1.6;color:#e4e5f5}
+.small{text-align:center;font-size:13px;color:#9ca5c5}
+</style>
+</head>
+<body>
+<main>
+<header>
+<h1>🎵 RhymeMaker AI</h1>
+<p>Create nursery rhyme video prompts and scene plans in seconds.</p>
+</header>
+
+<section class="card">
+<h2>✨ Create your rhyme</h2>
+
+<label>Rhyme title</label>
+<input id="title" placeholder="Example: Twinkle Twinkle Little Star">
+
+<label>Lyrics (optional)</label>
+<textarea id="lyrics" placeholder="Paste your rhyme lyrics here..."></textarea>
+
+<label>Video duration</label>
+<select id="duration">
+<option>30 seconds</option>
+<option selected>60 seconds</option>
+<option>90 seconds</option>
+<option>120 seconds</option>
+</select>
+
+<label>Visual style</label>
+<select id="style">
+<option>3D cartoon animation</option>
+<option>Colourful 2D animation</option>
+<option>Soft storybook illustration</option>
+<option>Clay animation</option>
+</select>
+
+<label>Video format</label>
+<select id="format">
+<option>Vertical 9:16 (TikTok / Shorts)</option>
+<option>Horizontal 16:9 (YouTube)</option>
+<option>Square 1:1</option>
+</select>
+
+<button onclick="generate()">Generate my video plan 🚀</button>
+</section>
+
+<section class="card">
+<h2>🎬 Your video plan</h2>
+<div id="output">Your generated video plan will appear here.</div>
+<button onclick="copyPlan()">📋 Copy video prompt</button>
+</section>
+
+<p class="small">RhymeMaker AI • Made for creative nursery rhyme videos</p>
+</main>
+
+<script>
+function generate(){
+const title=document.getElementById("title").value.trim();
+const lyrics=document.getElementById("lyrics").value.trim();
+const duration=document.getElementById("duration").value;
+const style=document.getElementById("style").value;
+const format=document.getElementById("format").value;
+if(!title){alert("Please enter a rhyme title.");return;}
+const scenes=duration==="30 seconds"?3:duration==="60 seconds"?6:duration==="90 seconds"?9:12;
+let plan=`RH YMEMAKER AI VIDEO PROMPT
+
+TITLE: ${title}
+DURATION: ${duration}
+VISUAL STYLE: ${style}
+FORMAT: ${format}
+
+MAIN PROMPT:
+Create a beautiful, child-friendly nursery rhyme video titled "${title}". Use ${style}, bright friendly colours, charming characters, gentle movements and a magical setting. Keep the characters consistent throughout the video. Make it cheerful, engaging and suitable for young children. Synchronise the visuals with the rhyme music.
+
+SCENE PLAN:
+`;
+for(let i=1;i<=scenes;i++){
+plan+=`Scene ${i}: Create a visually interesting moment that matches the next part of "${title}". Use gentle camera movement, expressive characters and colourful backgrounds.\n`;
+}
+plan+=`\nLYRICS / AUDIO GUIDE:\n${lyrics||"Add the rhyme lyrics and matching cheerful music here."}\n\nENDING:\nFinish with a warm, happy scene and a smooth fade out.\n`;
+document.getElementById("output").textContent=plan;
+}
+function copyPlan(){
+const text=document.getElementById("output").textContent;
+if(text==="Your generated video plan will appear here."){alert("Generate a plan first.");return;}
+if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>alert("Video prompt copied!")).catch(()=>alert("Please select and copy the prompt manually."));}
+else{alert("Please select and copy the prompt manually.");}
+}
+</script>
+</body>
+</html>
